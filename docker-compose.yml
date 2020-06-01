@@ -18,7 +18,7 @@ services:
     volumes:
       - .:/usr/app:delegated
     ports:
-      - 8892:8892
+      - $API_PORT:$API_PORT
     networks:
       - local
     command: pipenv run watchmedo auto-restart -p="*.py" -R --signal=9 python ./src/main.py

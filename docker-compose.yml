@@ -1,0 +1,27 @@
+version: "3.7"
+services:
+  db:
+    image: mongo
+    volumes:
+      - ./mongo-volume:/data/db
+    env_file:
+      - .env
+    ports:
+      - 27019:27017
+    networks:
+      - local
+
+  api:
+    depends_on:
+      - db
+    build: .
+    volumes:
+      - .:/usr/app:delegated
+    ports:
+      - 8892:8892
+    networks:
+      - local
+    command: pipenv run watchmedo auto-restart -p="*.py" -R --signal=9 python ./src/main.py
+
+networks:
+  local:
